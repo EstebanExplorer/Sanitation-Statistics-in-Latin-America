@@ -1,16 +1,16 @@
-package org.proyecto2;
+package org.saneamientoAmericaLatina;
 
 //mvn fmt:format
 
 import java.text.MessageFormat;
-import org.proyecto2.repository.CountrySanitationStatisticsRepositoryImpl;
-import org.proyecto2.service.SanitationStatisticService;
-import org.proyecto2.service.SanitationStatisticServiceImpl;
+import org.saneamientoAmericaLatina.repository.CountrySanitationStatisticsRepositoryFileImpl;
+import org.saneamientoAmericaLatina.service.SanitationStatisticService;
+import org.saneamientoAmericaLatina.service.SanitationStatisticServiceImpl;
 public class AppRun {
     public static void main(String[] args) {
 
         SanitationStatisticService sanitationStatisticService =
-                new SanitationStatisticServiceImpl(new CountrySanitationStatisticsRepositoryImpl());
+                new SanitationStatisticServiceImpl(new CountrySanitationStatisticsRepositoryFileImpl());
 
         Double averageWaterAccess = sanitationStatisticService.averageWaterAccess();
         String countryGreaterAccessWater = sanitationStatisticService.countryGreaterAccessWater();
@@ -33,6 +33,6 @@ public class AppRun {
             MessageFormat.format("Average population affected by drought: {0}", averagePopulationAffectedByDrought));
         
         System.out.println(
-            MessageFormat.format("Variance affected population droughts: {0}", varianceAffectedPopulationDroughts));
+            MessageFormat.format("Variances affected population droughts: {0}", varianceAffectedPopulationDroughts));
     }
 }

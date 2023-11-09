@@ -1,10 +1,10 @@
-package org.proyecto2.service;
+package org.saneamientoAmericaLatina.service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.proyecto2.model.CountrySanitationStatistics;
-import org.proyecto2.repository.CountrySanitationStatisticsRepository;
+import org.saneamientoAmericaLatina.model.CountrySanitationStatistics;
+import org.saneamientoAmericaLatina.repository.CountrySanitationStatisticsRepository;
 
 public class SanitationStatisticServiceImpl implements SanitationStatisticService{
 
