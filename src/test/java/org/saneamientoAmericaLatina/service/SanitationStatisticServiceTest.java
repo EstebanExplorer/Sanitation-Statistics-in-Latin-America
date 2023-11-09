@@ -23,7 +23,7 @@ public class SanitationStatisticServiceTest {
 
     @Test
     public void testAverageWaterAccess() {
-        logger.info( "test promedio accesoAgua");
+        logger.info( "test promedio acceso agua");
         SanitationStatisticService instance = new SanitationStatisticServiceImpl();
         Double expResult = null;
         Double result = instance.averageWaterAccess();

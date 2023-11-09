@@ -33,6 +33,6 @@ public class AppRun {
             MessageFormat.format("Average population affected by drought: {0}", averagePopulationAffectedByDrought));
         
         System.out.println(
-            MessageFormat.format("Variance affected population droughts: {0}", varianceAffectedPopulationDroughts));
+            MessageFormat.format("Variances affected population droughts: {0}", varianceAffectedPopulationDroughts));
     }
 }

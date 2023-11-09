@@ -33,6 +33,7 @@ public class CountrySanitationStatisticsRepositoryFileImpl implements CountrySan
   }
     
   private CountrySanitationStatistics buildCountrySanitationStatistics(String plainTextCountrySanitation){
+      logger.info( "Generando vectores" );
    
     String[] questionArray = plainTextCountrySanitation.split(",\\s*");//En el archivo las notas vienen separadas por comas por ejemplo: UNIDAD 1,4.5D,2023-08-01
     return new CountrySanitationStatistics(questionArray[0],
@@ -45,7 +46,6 @@ public class CountrySanitationStatisticsRepositoryFileImpl implements CountrySan
     );
   }
 
-   
     @Override
     public List<CountrySanitationStatistics> statisticsOfCountries(){
         logger.info( "Cargando los datos del archivo" );
