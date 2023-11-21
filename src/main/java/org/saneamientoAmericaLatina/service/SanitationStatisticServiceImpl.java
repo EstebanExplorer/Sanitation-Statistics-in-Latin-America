@@ -2,116 +2,118 @@ package org.saneamientoAmericaLatina.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.saneamientoAmericaLatina.model.CountrySanitationStatistics;
 import org.saneamientoAmericaLatina.repository.CountrySanitationStatisticsRepository;
 
-public class SanitationStatisticServiceImpl implements SanitationStatisticService{
+public class SanitationStatisticServiceImpl implements SanitationStatisticService {
 
-    private final CountrySanitationStatisticsRepository countrySanitationStatisticsRepository;
+  private final CountrySanitationStatisticsRepository countrySanitationStatisticsRepository;
 
-    public SanitationStatisticServiceImpl(CountrySanitationStatisticsRepository countrySanitationStatisticsRepository){
-        this.countrySanitationStatisticsRepository = countrySanitationStatisticsRepository;
+  public SanitationStatisticServiceImpl(
+      CountrySanitationStatisticsRepository countrySanitationStatisticsRepository) {
+    this.countrySanitationStatisticsRepository = countrySanitationStatisticsRepository;
+  }
+
+  @Override
+  public Double averageWaterAccess() {
+    List<CountrySanitationStatistics> countriesList =
+        this.countrySanitationStatisticsRepository.statisticsOfCountries();
+
+    Double sumAverageWaterAccess = 0D;
+    int numCountries = countriesList.size();
+
+    for (CountrySanitationStatistics i : countriesList) {
+      sumAverageWaterAccess += i.waterAccessPercentage();
     }
 
+    return sumAverageWaterAccess / numCountries;
+  }
 
-    @Override
-    public Double averageWaterAccess(){
-        List<CountrySanitationStatistics> countriesList = this.countrySanitationStatisticsRepository.statisticsOfCountries();
+  @Override
+  public String countryGreaterAccessWater() {
+    List<CountrySanitationStatistics> countriesList =
+        this.countrySanitationStatisticsRepository.statisticsOfCountries();
 
-        Double sumAverageWaterAccess = 0D;
-        int numCountries = countriesList.size();
+    String country = "";
+    Double waterAccessPercentage = 0D;
 
-        for(CountrySanitationStatistics i:countriesList){
-            sumAverageWaterAccess += i.waterAccessPercentage();
-        }
+    for (CountrySanitationStatistics i : countriesList) {
 
-        return sumAverageWaterAccess / numCountries;
+      if (i.waterAccessPercentage() > waterAccessPercentage) {
+        country = i.country();
+        waterAccessPercentage = i.waterAccessPercentage();
+      }
     }
 
-    @Override
-    public String countryGreaterAccessWater(){
-        List<CountrySanitationStatistics> countriesList = this.countrySanitationStatisticsRepository.statisticsOfCountries();
+    return country;
+  }
 
-        String country = "";
-        Double waterAccessPercentage = 0D;
+  @Override
+  public Double medianPopulation() {
+    List<CountrySanitationStatistics> countriesList =
+        this.countrySanitationStatisticsRepository.statisticsOfCountries();
+    ArrayList<Integer> population = new ArrayList<Integer>();
 
-        for(CountrySanitationStatistics i:countriesList){
-
-            if(i.waterAccessPercentage() > waterAccessPercentage){
-                country = i.country();
-                waterAccessPercentage = i.waterAccessPercentage();
-            }
-        }
-
-        return country;
+    for (CountrySanitationStatistics i : countriesList) {
+      population.add(i.population());
     }
 
-    @Override
-    public Double medianPopulation(){
-        List<CountrySanitationStatistics> countriesList = this.countrySanitationStatisticsRepository.statisticsOfCountries();
-        ArrayList<Integer> population = new ArrayList<Integer>();
+    ArrayList<Integer> orderedPopulation = (ArrayList<Integer>) sortData(population).clone();
 
-        for(CountrySanitationStatistics i:countriesList){
-            population.add(i.population());
-        }
+    if ((orderedPopulation.size() % 2) == 0) {
+      int data = orderedPopulation.size() / 2;
 
-        ArrayList<Integer> orderedPopulation = (ArrayList<Integer>) sortData(population).clone();
+      return Double.valueOf((orderedPopulation.get(data - 1) + orderedPopulation.get(data)) / 2);
+    } else {
+      int data = (int) Math.floor(orderedPopulation.size() / 2);
 
-        if((orderedPopulation.size() % 2) == 0){
-            int data = orderedPopulation.size() / 2;
+      return Double.valueOf(orderedPopulation.get(data));
+    }
+  }
 
-            return Double.valueOf( (orderedPopulation.get(data - 1) + orderedPopulation.get(data)) / 2 );
-        }else {
-            int data = (int) Math.floor(orderedPopulation.size() / 2);
+  @Override
+  public Double averagePopulationAffectedByDrought() {
+    List<CountrySanitationStatistics> countriesList =
+        this.countrySanitationStatisticsRepository.statisticsOfCountries();
 
-            return Double.valueOf( orderedPopulation.get(data) );
-        }
+    Double sum = 0D;
+
+    for (CountrySanitationStatistics i : countriesList) {
+      sum += i.populationAffectedByDrought();
     }
 
-    @Override
-    public Double averagePopulationAffectedByDrought(){
-        List<CountrySanitationStatistics> countriesList = this.countrySanitationStatisticsRepository.statisticsOfCountries();
+    return sum / countriesList.size();
+  }
 
-        Double sum = 0D;
+  @Override
+  public Double varianceAffectedPopulationDroughts(Double averagePopulationAffectedByDrought) {
+    List<CountrySanitationStatistics> countriesList =
+        this.countrySanitationStatisticsRepository.statisticsOfCountries();
+    Double sumSquare = 0D;
 
-        for(CountrySanitationStatistics i:countriesList){
-            sum += i.populationAffectedByDrought();
-        }
-
-        return sum / countriesList.size();
+    for (CountrySanitationStatistics i : countriesList) {
+      Double difference = i.populationAffectedByDrought() - averagePopulationAffectedByDrought;
+      sumSquare += difference * difference;
     }
 
-    @Override
-    public Double varianceAffectedPopulationDroughts(Double averagePopulationAffectedByDrought){
-        List<CountrySanitationStatistics> countriesList = this.countrySanitationStatisticsRepository.statisticsOfCountries();
-        Double sumSquare = 0D;
+    return sumSquare / countriesList.size();
+  }
 
-        for(CountrySanitationStatistics i: countriesList){
-            Double difference = i.populationAffectedByDrought() - averagePopulationAffectedByDrought;
-            sumSquare += difference * difference;
+  @Override
+  public ArrayList<Integer> sortData(ArrayList<Integer> list) {
+    ArrayList<Integer> orderedList = list;
+
+    for (int i = 1; i < list.size(); i++) {
+      for (int j = 0; j < (list.size() - i); j++) {
+
+        if (orderedList.get(j) > orderedList.get(j + 1)) {
+          Integer num = orderedList.get(j + 1);
+          orderedList.set((j + 1), orderedList.get(j));
+          orderedList.set(j, num);
         }
-
-        return sumSquare / countriesList.size();
+      }
     }
 
-
-    @Override
-    public ArrayList<Integer> sortData(ArrayList<Integer> list){
-        ArrayList<Integer> orderedList = list;
-
-        for(int i = 1; i < list.size(); i++){
-            for(int j = 0; j < (list.size() - i); j++ ){
-
-                if(orderedList.get(j) > orderedList.get(j + 1)){
-                    Integer num = orderedList.get(j + 1);
-                    orderedList.set((j + 1), orderedList.get(j));
-                    orderedList.set(j, num);
-                }
-
-            }
-        }
-
-        return orderedList;
-    }
+    return orderedList;
+  }
 }

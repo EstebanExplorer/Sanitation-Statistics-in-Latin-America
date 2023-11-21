@@ -3,16 +3,19 @@ package org.saneamientoAmericaLatina.service;
 import java.util.ArrayList;
 
 public interface SanitationStatisticService {
-    Double averageWaterAccess();
-    String countryGreaterAccessWater();
+  Double averageWaterAccess();
 
-    //String countryLessAccessWater();
-    //String countryMoreHospitalsPerHundredThousandPeople();
-    //Double percentageHospitalsSanitationProblems();
+  String countryGreaterAccessWater();
 
-    Double medianPopulation();
+  // String countryLessAccessWater();
+  // String countryMoreHospitalsPerHundredThousandPeople();
+  // Double percentageHospitalsSanitationProblems();
 
-    Double averagePopulationAffectedByDrought();
-    Double varianceAffectedPopulationDroughts(Double averagePopulationAffectedByDrought);
-    ArrayList<Integer> sortData(ArrayList<Integer> list);
+  Double medianPopulation();
+
+  Double averagePopulationAffectedByDrought();
+
+  Double varianceAffectedPopulationDroughts(Double averagePopulationAffectedByDrought);
+
+  ArrayList<Integer> sortData(ArrayList<Integer> list);
 }
